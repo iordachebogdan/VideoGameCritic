@@ -3,13 +3,14 @@ module Api
     def index
       games = Game.order('id');
       render json: {status: 'SUCCESS', message: 'Loaded games',
-        data: games}, status: :ok
+        data: ActiveModel::Serializer::CollectionSerializer.new(games, each_serializer: GameSerializer).as_json},
+        status: :ok
     end
 
     def show
       game = Game.find(params[:id])
       render json: {status: 'SUCCESS', message: 'Loaded game',
-        data: game}, status: :ok
+        data: GameSerializer.new(game).as_json}, status: :ok
     end
 
     def create
@@ -17,10 +18,10 @@ module Api
 
       if game.save
        render json: {status: 'SUCCESS', message: 'Saved game',
-          data: game}, status: :ok
+          data: GameSerializer.new(game).as_json}, status: :ok
       else
         render json: {status: 'ERROR', message: 'Game not saved',
-          data: game}, status: :unprocessable_entity
+          data: game.errors}, status: :unprocessable_entity
       end
     end
 
@@ -28,10 +29,10 @@ module Api
       game = Game.find(params[:id])
       if game.destroy
         render json: {status: 'SUCCESS', message: 'Destroyed game',
-          data: game}, status: :ok
+          data: GameSerializer.new(game).as_json}, status: :ok
       else
         render json: {status: 'ERROR', message: 'Game not destroyed',
-          data: game}, status: :unprocessable_entity
+          data: game.errors}, status: :unprocessable_entity
       end
     end
 
@@ -39,18 +40,17 @@ module Api
       game = Game.find(params[:id]);
       if game.update_attributes(game_params)
         render json: {status: 'SUCCESS', message: 'Updated game',
-          data: game}, status: :ok
+          data: GameSerializer.new(game).as_json}, status: :ok
       else
         render json: {status: 'ERROR', message: 'Game not updated',
-          data: game}, status: :unprocessable_entity
+          data: game.errors}, status: :unprocessable_entity
       end
     end
 
     private
 
     def game_params
-      params.require([:name, :description])
-      params.permit(:name, :description)
+      params.permit(:name, :description, :image)
     end
   end
 end
