@@ -3,13 +3,15 @@ module Api
     def index
       consoles = Console.order('id');
       render json: {status: 'SUCCESS', message: 'Loaded consoles',
-        data: consoles}, status: :ok
+        data: ActiveModel::Serializer::CollectionSerializer.new(consoles, each_serializer: ConsoleSerializer).as_json},
+        status: :ok
     end
 
     def show
       console = Console.find(params[:id])
       render json: {status: 'SUCCESS', message: 'Loaded console',
-        data: console}, status: :ok
+        data: ConsoleSerializer.new(console).as_json},
+        status: :ok
     end
 
     def create
@@ -17,10 +19,12 @@ module Api
 
       if console.save
        render json: {status: 'SUCCESS', message: 'Saved console',
-          data: console}, status: :ok
+          data: ConsoleSerializer.new(console).as_json},
+          status: :ok
       else
         render json: {status: 'ERROR', message: 'Console not saved',
-          data: console}, status: :unprocessable_entity
+          data: console.errors},
+          status: :unprocessable_entity
       end
     end
 
@@ -28,10 +32,10 @@ module Api
       console = Console.find(params[:id])
       if console.destroy
         render json: {status: 'SUCCESS', message: 'Destroyed console',
-          data: console}, status: :ok
+          data: ConsoleSerializer.new(console).as_json}, status: :ok
       else
         render json: {status: 'ERROR', message: 'Console not destroyed',
-          data: console}, status: :unprocessable_entity
+          data: console.errors}, status: :unprocessable_entity
       end
     end
 
@@ -39,18 +43,17 @@ module Api
       console = Console.find(params[:id]);
       if console.update_attributes(console_params)
         render json: {status: 'SUCCESS', message: 'Updated console',
-          data: console}, status: :ok
+          data: ConsoleSerializer.new(console)}, status: :ok
       else
         render json: {status: 'ERROR', message: 'Console not updated',
-          data: console}, status: :unprocessable_entity
+          data: console.errors}, status: :unprocessable_entity
       end
     end
 
     private
 
     def console_params
-      params.require([:name, :description])
-      params.permit(:name, :description)
+      params.permit(:name, :description, :image)
     end
   end
 end
