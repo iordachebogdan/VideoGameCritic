@@ -53,7 +53,7 @@ module Api
     private
 
     def console_params
-      params.permit(:name, :description, :image)
+      params.permit(:name, :description, :image, :platform_id)
     end
   end
 end
