@@ -4,5 +4,6 @@ Rails.application.routes.draw do
     resources :consoles
     resources :platforms
     resources :categories
+    resources :comments
   end
 end
