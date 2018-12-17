@@ -3,5 +3,6 @@ Rails.application.routes.draw do
     resources :games
     resources :consoles
     resources :platforms
+    resources :categories
   end
 end
