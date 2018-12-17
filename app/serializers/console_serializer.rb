@@ -1,6 +1,6 @@
 class ConsoleSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
-  attributes :id, :name, :description, :image_url
+  attributes :id, :name, :description, :created_at, :image_url
 
   def image_url
     if (object.image.attached?)

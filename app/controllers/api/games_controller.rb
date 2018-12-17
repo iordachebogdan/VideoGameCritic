@@ -1,7 +1,7 @@
 module Api
   class GamesController < ApplicationController
     def index
-      games = Game.order('id');
+      games = Game.order('created_at DESC');
       render json: {status: 'SUCCESS', message: 'Loaded games',
         data: ActiveModel::Serializer::CollectionSerializer.new(games, each_serializer: GameSerializer).as_json},
         status: :ok

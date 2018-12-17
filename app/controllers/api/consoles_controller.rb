@@ -1,7 +1,7 @@
 module Api
   class ConsolesController < ApplicationController
     def index
-      consoles = Console.order('id');
+      consoles = Console.order('created_at DESC');
       render json: {status: 'SUCCESS', message: 'Loaded consoles',
         data: ActiveModel::Serializer::CollectionSerializer.new(consoles, each_serializer: ConsoleSerializer).as_json},
         status: :ok
