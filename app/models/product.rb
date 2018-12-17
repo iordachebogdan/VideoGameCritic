@@ -3,4 +3,5 @@ class Product < ActiveRecord::Base
   validates :description, presence: true
   validates :type, presence: true
   has_one_attached :image
+  belongs_to :platform, optional: true
 end
