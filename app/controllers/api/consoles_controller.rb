@@ -2,6 +2,10 @@ module Api
   class ConsolesController < ApplicationController
     def index
       consoles = Console.order('created_at DESC');
+      filtering_params.each do |key, value|
+        consoles = consoles.public_send(key, value) if value.present?
+      end
+
       render json: {status: 'SUCCESS', message: 'Loaded consoles',
         data: ActiveModel::Serializer::CollectionSerializer.new(consoles, each_serializer: ConsoleSerializer).as_json},
         status: :ok
@@ -54,6 +58,10 @@ module Api
 
     def console_params
       params.permit(:name, :description, :image, :platform_id)
+    end
+
+    def filtering_params
+      params.slice(:platform_id, :search)
     end
   end
 end

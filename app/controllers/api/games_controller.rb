@@ -1,7 +1,11 @@
 module Api
   class GamesController < ApplicationController
     def index
-      games = Game.order('created_at DESC');
+      games = Game.order('created_at DESC')
+      filtering_params.each do |key, value|
+        games = games.public_send(key, value) if value.present?
+      end
+
       render json: {status: 'SUCCESS', message: 'Loaded games',
         data: ActiveModel::Serializer::CollectionSerializer.new(games, each_serializer: GameSerializer).as_json},
         status: :ok
@@ -51,6 +55,10 @@ module Api
 
     def game_params
       params.permit(:name, :description, :image, :category_id, :platform_id)
+    end
+
+    def filtering_params
+      params.slice(:platform_id, :category_ids, :search)
     end
   end
 end
