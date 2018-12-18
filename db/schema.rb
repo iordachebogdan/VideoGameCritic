@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_17_231554) do
+ActiveRecord::Schema.define(version: 2018_12_17_233455) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", null: false
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 2018_12_17_231554) do
     t.integer "rating"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "product_id"
   end
 
   create_table "platforms", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|

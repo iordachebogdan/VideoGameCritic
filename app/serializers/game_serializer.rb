@@ -3,6 +3,7 @@ class GameSerializer < ActiveModel::Serializer
   attributes :id, :name, :description, :created_at, :image_url
   has_one :platform, serializer: PlatformSerializer
   has_one :category, serializer: CategorySerializer
+  has_many :comments
 
   def image_url
     if (object.image.attached?)

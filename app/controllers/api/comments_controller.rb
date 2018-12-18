@@ -50,7 +50,7 @@ module Api
     private
 
     def comment_params
-      params.permit(:user, :text, :rating)
+      params.permit(:user, :text, :rating, :product_id)
     end
   end
 end
